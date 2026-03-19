@@ -1,0 +1,11 @@
+# Quartus - fichiers générés
+db/
+incremental_db/
+output_files/
+*.qws
+*.bak
+
+# GHDL - fichiers générés
+work-obj08.cf
+*.cf
+*.vcd
