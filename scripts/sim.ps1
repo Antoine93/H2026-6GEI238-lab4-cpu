@@ -1,5 +1,5 @@
 # sim.ps1 - Simulation GHDL + GTKWave
-# Usage: .\sim.ps1 <dossier>
+# Usage: .\sim.ps1 <entité>
 # Exemple: .\sim.ps1 regn
 
 param(
@@ -7,9 +7,11 @@ param(
     [string]$Entity
 )
 
-$EntityPath = "$Entity/$Entity.vhd"
-$TbPath = "$Entity/${Entity}_tb.vhd"
-$VcdFile = "$Entity/${Entity}_tb.vcd"
+# Chemins relatifs vers src/
+$SrcDir = "../src"
+$EntityPath = "$SrcDir/$Entity/$Entity.vhd"
+$TbPath = "$SrcDir/$Entity/${Entity}_tb.vhd"
+$VcdFile = "$SrcDir/$Entity/${Entity}_tb.vcd"
 
 Write-Host "=== Simulation de $Entity ===" -ForegroundColor Cyan
 

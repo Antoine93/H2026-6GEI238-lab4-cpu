@@ -1,8 +1,6 @@
 -- =============================================================================
 -- fichier     : regn.vhd
 -- description : registre générique de n bits avec chargement synchrone
--- auteur      : Antoine Larouche Tremblay
--- date        : 2026-03-18
 -- =============================================================================
 
 library ieee;
