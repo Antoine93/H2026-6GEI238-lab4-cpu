@@ -13,7 +13,7 @@ $EntityPath = "$SrcDir/$Entity/$Entity.vhd"
 $TbPath = "$SrcDir/$Entity/${Entity}_tb.vhd"
 $VcdFile = "$SrcDir/$Entity/${Entity}_tb.vcd"
 
-Write-Host "=== Simulation de $Entity ===" -ForegroundColor Cyan
+Write-Host "=== Simulation de : $Entity ===" -ForegroundColor Cyan
 
 # Vérifier que les fichiers existent
 if (-not (Test-Path $EntityPath)) {
@@ -44,6 +44,10 @@ Write-Host "Exécution (génération VCD)..." -ForegroundColor Yellow
 ghdl -r --std=08 "${Entity}_tb" --vcd=$VcdFile --stop-time=500ns
 if ($LASTEXITCODE -ne 0) { exit 1 }
 
-# Ouvrir GTKWave
-Write-Host "Ouverture de GTKWave..." -ForegroundColor Green
+# Définition de la couleur BlueViolet (Hex: #8A2BE2)
+$blueViolet = "$([char]27)[38;2;138;43;226m"
+$reset = "$([char]27)[0m"
+
+# Ouverture de GTKWave
+Write-Host "${blueViolet}Ouverture de GTKWave...${reset}"
 gtkwave $VcdFile
