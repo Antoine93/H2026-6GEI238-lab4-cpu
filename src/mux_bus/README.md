@@ -17,9 +17,9 @@ Multiplexeur 10 vers 1 pour le bus partagé. Sélectionne une source parmi R0-R7
 
 ## Priorité
 ```
-if din_out = '1' then bus_out <= din
+if r_out(i) = '1' then bus_out <= ri     -- R0-R7 (priorité haute)
 elsif g_out = '1' then bus_out <= g
-elsif r_out(i) = '1' then bus_out <= ri
+elsif din_out = '1' then bus_out <= din  -- DIN (priorité basse)
 ```
 
 ## Simulation
