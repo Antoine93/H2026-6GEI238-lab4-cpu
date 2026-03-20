@@ -1,8 +1,7 @@
 -- =============================================================================
 -- fichier     : de10_lite_top.vhd
 -- description : Top-level pour la carte DE10-Lite.
---               Interface entre le processeur et les E/S physiques.
---               Utilise le debounce pour stabiliser les boutons.
+--               Meme approche que lab 3 : debounce direct comme horloge.
 -- =============================================================================
 
 library ieee;
@@ -10,17 +9,10 @@ use ieee.std_logic_1164.all;
 
 entity de10_lite_top is
     port (
-        -- Horloge 50 MHz
-        MAX10_CLK1_50 : in  std_logic;
-
-        -- Boutons (active bas)
-        KEY           : in  std_logic_vector(1 downto 0);
-
-        -- Interrupteurs
-        SW            : in  std_logic_vector(9 downto 0);
-
-        -- LEDs
-        LEDR          : out std_logic_vector(9 downto 0)
+        CLOCK_50 : in  std_logic;
+        KEY      : in  std_logic_vector(1 downto 0);
+        SW       : in  std_logic_vector(9 downto 0);
+        LEDR     : out std_logic_vector(9 downto 0)
     );
 end entity de10_lite_top;
 
@@ -41,7 +33,7 @@ begin
     -- =========================================================================
     debounce_clk: entity work.debounce
         port map (
-            clk       => MAX10_CLK1_50,
+            clk       => CLOCK_50,
             button    => KEY(0),
             debounced => clk_debounced
         );
@@ -51,18 +43,22 @@ begin
     -- =========================================================================
     debounce_rst: entity work.debounce
         port map (
-            clk       => MAX10_CLK1_50,
+            clk       => CLOCK_50,
             button    => KEY(1),
             debounced => resetn_debounced
         );
 
     -- =========================================================================
     -- Processeur
+    -- Le debounce sort '1' quand bouton appuye, '0' sinon
+    -- Lab 3: rst actif haut (rst='1' = reset)
+    -- Lab 4: resetn actif bas (resetn='0' = reset)
+    -- Donc: NOT resetn_debounced pour inverser la logique
     -- =========================================================================
     cpu: entity work.proc
         port map (
             clk     => clk_debounced,
-            resetn  => resetn_debounced,
+            resetn  => not resetn_debounced,
             run     => SW(9),
             din     => SW(8 downto 0),
             bus_out => proc_bus,
