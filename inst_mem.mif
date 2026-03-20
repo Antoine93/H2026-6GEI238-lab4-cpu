@@ -1,0 +1,69 @@
+-- =============================================================================
+-- fichier     : inst_mem.mif
+-- description : Sequence de demonstration du processeur simple
+-- auteur      : Lab 4 - 6GEI238
+-- =============================================================================
+-- Format instruction : IIIXXXYYY
+--   III = 000 (mv), 001 (mvi), 010 (add), 011 (sub)
+--   XXX = Rx (registre destination)
+--   YYY = Ry (registre source)
+-- =============================================================================
+
+DEPTH = 32;
+WIDTH = 9;
+ADDRESS_RADIX = HEX;
+DATA_RADIX = BIN;
+
+CONTENT BEGIN
+    -- ========== PHASE 1 : Initialisation des registres ==========
+    00 : 001000000;  -- mvi R0, #D   -> Charger immediate dans R0
+    01 : 000000111;  -- D = 7        -> R0 = 7
+
+    02 : 001001000;  -- mvi R1, #D   -> Charger immediate dans R1
+    03 : 000000011;  -- D = 3        -> R1 = 3
+
+    -- ========== PHASE 2 : Addition ==========
+    04 : 010000001;  -- add R0, R1   -> R0 = R0 + R1 = 7 + 3 = 10 (0x00A)
+
+    -- ========== PHASE 3 : Copie avec mv ==========
+    05 : 000010000;  -- mv R2, R0    -> R2 = R0 = 10
+
+    -- ========== PHASE 4 : Soustraction ==========
+    06 : 011010001;  -- sub R2, R1   -> R2 = R2 - R1 = 10 - 3 = 7
+
+    -- ========== PHASE 5 : Nouvelle valeur et calculs en chaine ==========
+    07 : 001011000;  -- mvi R3, #D   -> Charger immediate dans R3
+    08 : 000000101;  -- D = 5        -> R3 = 5
+
+    09 : 010011010;  -- add R3, R2   -> R3 = R3 + R2 = 5 + 7 = 12 (0x00C)
+
+    -- ========== PHASE 6 : Transferts multiples ==========
+    0A : 000100011;  -- mv R4, R3    -> R4 = R3 = 12
+    0B : 000101010;  -- mv R5, R2    -> R5 = R2 = 7
+
+    -- ========== PHASE 7 : Calcul final ==========
+    0C : 010100101;  -- add R4, R5   -> R4 = R4 + R5 = 12 + 7 = 19 (0x013)
+    0D : 011100001;  -- sub R4, R1   -> R4 = R4 - R1 = 19 - 3 = 16 (0x010)
+
+    -- ========== PHASE 8 : Remise a zero ==========
+    0E : 011101101;  -- sub R5, R5   -> R5 = R5 - R5 = 0
+
+    -- ========== FIN ==========
+    0F : 000000000;  -- nop (mv R0, R0)
+    10 : 000000000;
+    11 : 000000000;
+    12 : 000000000;
+    13 : 000000000;
+    14 : 000000000;
+    15 : 000000000;
+    16 : 000000000;
+    17 : 000000000;
+    18 : 000000000;
+    19 : 000000000;
+    1A : 000000000;
+    1B : 000000000;
+    1C : 000000000;
+    1D : 000000000;
+    1E : 000000000;
+    1F : 000000000;
+END;
