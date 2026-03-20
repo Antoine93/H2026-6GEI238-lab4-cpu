@@ -18,11 +18,11 @@ end vDFF;
 
 architecture rtl of vDFF is
 begin
-  	-- ÉTAPE UNIQUE: Mémorisation sur front montant
-  	-- Q prend la valeur de D à chaque rising_edge(clk)
-  	process(clk) begin
-    	if rising_edge(clk) then
-      		Q <= D;  -- Transfert synchrone D → Q
-    	end if;
-  	end process;
+  -- ÉTAPE UNIQUE: Mémorisation sur front montant
+  -- Q prend la valeur de D à chaque rising_edge(clk)
+  process(clk) begin
+    if rising_edge(clk) then
+      Q <= D;  -- Transfert synchrone D → Q
+    end if;
+  end process;
 end rtl;

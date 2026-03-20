@@ -9,3 +9,4 @@ output_files/
 work-obj08.cf
 *.cf
 *.vcd
+greybox_tmp/

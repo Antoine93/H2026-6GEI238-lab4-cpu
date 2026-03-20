@@ -24,16 +24,27 @@ XXX = registre destination (3 bits)
 YYY = registre source (3 bits)
 ```
 
+## Parties du laboratoire
+
+| Partie | Description | Fichiers clés |
+|--------|-------------|---------------|
+| 1 | Processeur simple | `src/proc/proc.vhd` |
+| 2 | Testbench | `src/proc/proc_tb.vhd` |
+| 3 | Interface DE10-Lite + debounce | `src/top/de10_lite_top.vhd` |
+| 4 | Intégration mémoire ROM | `src/top/de10_lite_top_part4.vhd` |
+
 ## Structure du projet
 
 ```
 src/
-├── regn/        # Registre générique n bits
-├── dec3to8/     # Décodeur 3 vers 8 (one-hot)
 ├── alu/         # Additionneur/soustracteur
-├── mux_bus/     # Multiplexeur 10:1 pour bus
+├── debounce/    # Anti-rebond (counter, vDFF)
+├── dec3to8/     # Décodeur 3 vers 8 (one-hot)
 ├── fsm/         # Machine à états (contrôleur)
-└── proc/        # Top-level (processeur complet)
+├── mux_bus/     # Multiplexeur 10:1 pour bus
+├── proc/        # Processeur complet
+├── regn/        # Registre générique n bits
+└── top/         # Top-levels DE10-Lite (Parties 3 et 4)
 
 scripts/
 ├── sim.ps1      # Simulation d'un composant isolé
@@ -65,7 +76,31 @@ cd scripts
 ## Hiérarchie des dépendances
 
 ```
-Niveau 0: regn, dec3to8, alu
-Niveau 1: mux_bus, fsm
-Niveau 2: proc (top-level)
+Niveau 0: regn, dec3to8, alu, vDFF
+Niveau 1: mux_bus, fsm, counter
+Niveau 2: proc, debounce
+Niveau 3: de10_lite_top (Partie 3)
+Niveau 4: de10_lite_top_part4 (Partie 4, nécessite inst_mem)
 ```
+
+## Connexions DE10-Lite
+
+### Partie 3 (entrée manuelle)
+| Périphérique | Fonction |
+|--------------|----------|
+| KEY[0] | Horloge processeur |
+| KEY[1] | Reset (actif bas) |
+| SW[8:0] | DIN (instruction) |
+| SW[9] | RUN |
+| LEDR[8:0] | Bus |
+| LEDR[9] | Done |
+
+### Partie 4 (avec ROM)
+| Périphérique | Fonction |
+|--------------|----------|
+| KEY[0] | MClock (mémoire) |
+| KEY[1] | PClock (processeur) |
+| SW[0] | Reset |
+| SW[9] | RUN |
+| LEDR[8:0] | Bus |
+| LEDR[9] | Done |
