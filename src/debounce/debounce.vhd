@@ -50,5 +50,5 @@ begin
 
 	-- ÉTAPE 4: Détection de fin de comptage (tous les bits à 1)
 	done <= '1' when count = "11111111111111111111" else '0';
-	debounced <= not debounced_reg;  -- Inverse pour KEY actif bas
+	debounced <= debounced_reg;
 end rtl;
